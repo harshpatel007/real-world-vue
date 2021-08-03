@@ -1,31 +1,38 @@
 <template>
   <div>
-    <h1>Events Listing</h1>
-    <EventCard v-for="event in events" :key="event.id" :event="event" />
+    <h1>Events for Good</h1>
+    <div class="events">
+      <EventCard v-for="event in events" :key="event.id" :event="event" />
+    </div>
   </div>
 </template>
 
 <script>
 import EventCard from "@/components/EventCard.vue";
-import EventService from "@/services/EventService.js";
-
 export default {
   components: {
     EventCard,
   },
-  data() {
-    return {
-      events: [],
-    };
-  },
   created() {
-    EventService.getEvents()
-      .then((response) => {
-        this.events = response.data;
-      })
-      .catch((error) => {
-        console.log("There was an error:", error.response);
+    this.$store.dispatch("fetchEvents").catch((error) => {
+      this.$router.push({
+        name: "ErrorDisplay",
+        params: { error: error },
       });
+    });
+  },
+  computed: {
+    events() {
+      return this.$store.state.events;
+    },
   },
 };
 </script>
+
+<style scoped>
+.events {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+</style>

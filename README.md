@@ -27,7 +27,7 @@ yarn lint
 ### Run json server
 
 ```
-json-server --watch db.json
+json-server --watch db.json`
 ```
 
 ### Customize configuration
